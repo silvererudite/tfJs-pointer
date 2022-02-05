@@ -1,0 +1,27 @@
+.tfJsHp-canvas {
+  background-color: transparent; 
+  bottom: 0;
+  display: block;
+  left: 0;
+  position: fixed;
+  pointer-events:none;
+  right: 0;
+  top: 0;
+  z-index: 2; 
+}
+.tfJsHp-canvas-calibrate {
+  background-color: lightgray; 
+  opacity: 0.5;
+  bottom: 0;
+  display: block;
+  left: 0;
+  position: fixed;
+  pointer-events:none;
+  right: 0;
+  top: 0;
+  z-index: 2; 
+}
+video {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}

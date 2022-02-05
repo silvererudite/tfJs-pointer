@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles/common-style.css" />
+        <title>Options</title>
+    </head>
+    <body>
+        <main class="tfJsHp-options-wrapper">
+            <section class="tfJsHp-left-col">Customize pointer</section>
+
+            <section class="tfJsHp-right-col">
+                <p class="tfJsHp-options-text">Change pointer color</p>
+                <input
+                    type="color" name="tfJsHp-color" id="tfJsHp-pointer-color" class="tfJsHp-options-input"
+                />
+                <p class="tfJsHp-options-text">Change pointer thickness</p>
+                <input
+                    type="number" name="tfJsHp-p-size" min="1" max="3"
+                    id="tfJsHp-pointer-thickness" class="tfJsHp-options-input"
+                    placeholder="1"
+                />
+                <p>
+                    Disable pointer trail
+                    <input
+                        type="checkbox" name="tfJsHp-disable-trail" id="tfJsHp-trail"
+                    />
+                </p>
+                <button class="options-btn">Save changes</button>
+            </section>
+        </main>
+        <script src="js/options.js"></script>
+    </body>
+</html>

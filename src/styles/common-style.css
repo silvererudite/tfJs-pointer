@@ -1,0 +1,131 @@
+html,
+body {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-family: "Roboto Mono", monospace;
+  justify-content: center;
+  margin: 0;
+}
+
+.popup {
+  background: lightblue;
+  color: black;
+  height: 300px;
+  width: 300px;
+}
+
+.container-toggle {
+  background-color: #fff;
+  border-radius: 50px;
+  cursor: pointer;
+  height: 40px;
+  margin: 0 auto;
+  transform: translate(-50%, -50%);
+  width: 100px;
+}
+
+.target-toggle {
+  border-radius: 100%;
+  height: 50px;
+  position: absolute;
+  top: -5px;
+  transition: 0.5s;
+  width: 50px;
+}
+
+.unEnable {
+  background-color:  #8b8c89;
+  left: -5px;
+}
+
+.enable {
+  background-color: #ffe66d;
+  right: -5px;
+}
+
+.tfJsHp-links {
+  font-size: 18px;
+}
+
+.tfJs-steps-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+  margin-top: 4em;
+  margin-bottom: 1em;
+}
+
+.tfJs-step {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  justify-content: center;
+  max-width: 400px;
+}
+
+.tfJsHp-options-wrapper {
+  align-items: center;
+  display: grid;
+  font-size: 20px;
+  gap: 2em;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 50vh;
+  justify-items: center;
+  margin: auto;
+  max-width: 700px;
+}
+
+.tfJsHp-right-col {
+  background: lightblue;
+  height: fit-content;
+  padding: 1em;
+  width: 300px;
+}
+
+.tfJsHp-calibration-steps {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+   
+}
+
+.tfJs-ui-step {
+    padding: 1em;
+}
+
+.tfJsHp-popup-actions, .tfJsHp-calibration-steps {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  margin-bottom: 2em;
+}
+
+.popup-btn, .options-btn {
+  background-color: pink;
+  border: 2px solid black;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 4px;
+  padding: .5em;
+  width: 200px;
+}
+
+.tfJsHp-ui-step {
+  background-color: pink;
+  border: 2px solid black;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 8px;
+  padding: .5em;
+  width: 300px;
+}
+
+.tfJsHp-options-input, .tfJsHp-options-text {
+  margin-bottom: 1em;
+}
