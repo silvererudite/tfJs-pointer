@@ -21,18 +21,24 @@ let render = (function () {
 
   function drawCircle(beginX, beginY) {
     CONTEXT.beginPath();
-    CONTEXT.arc(beginX, beginY, 15, 0, 2 * Math.PI, false);
+    CONTEXT.arc(beginX, beginY, 8, 0, 2 * Math.PI, false);
     CONTEXT.closePath();
     CONTEXT.strokeStyle = "red";
+    CONTEXT.fillStyle = 'red';
+    CONTEXT.fill();
     CONTEXT.lineWidth = 3;
     CONTEXT.stroke();
   }
-
+  function clearCanvas(){
+    CONTEXT.clearRect(0, 0, CANVAS.width, CANVAS.height); 
+  }
   function removeCircle(beginX, beginY) {
     CONTEXT.beginPath();
     CONTEXT.arc(beginX, beginY, 15, 0, 2 * Math.PI, false);
     CONTEXT.closePath();
     CONTEXT.strokeStyle = "white";
+    CONTEXT.fillStyle = 'white';
+    CONTEXT.fill();
     CONTEXT.lineWidth = 6;
     CONTEXT.stroke();
   }
@@ -41,9 +47,9 @@ let render = (function () {
     draw: drawCircle,
     remove: removeCircle,
     canvas: CANVAS,
+    clear: clearCanvas,
   };
 })();
-
 
 function logProgress(epoch, data) {
   console.log('Epoch: ' + epoch + ' Data: ',  data);
@@ -99,19 +105,33 @@ async function step1() {
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
         predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
+        // predictions[0].keypoints[8].x,
+        // predictions[0].keypoints[8].y,
+        // predictions[0].keypoints[5].x,
+        // predictions[0].keypoints[5].y
+
       ]);
       OUTPUTS.push([0, 0]);
     } else if (tempBuffer.length > 0) {
       calculateChange(
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
-        predictions[0].keypoints3D[8].z
+        predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
       );
     } else {
       tempBuffer[0] = [
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
         predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
       ];
     }
   }
@@ -126,15 +146,17 @@ async function step1() {
     count = 0;
     tempBuffer = [];
     prompt.innerText = "Put finger in top right";
-    setTimeout(step2, 2000);
+    step2();
   }
 }
 
-function calculateChange(x, y, z) {
+function calculateChange(x, y, z, base_x, base_y, base_z) {
   if (
-    Math.abs(tempBuffer[0][0]) - Math.abs(x) < 0.01 &&
+    (Math.abs(tempBuffer[0][0]) - Math.abs(x) < 0.01 &&
     Math.abs(tempBuffer[0][1]) - Math.abs(y) < 0.01 &&
-    Math.abs(tempBuffer[0][2]) - Math.abs(z) < 0.01
+    Math.abs(tempBuffer[0][2]) - Math.abs(z) < 0.01) || (Math.abs(tempBuffer[0][3]) - Math.abs(base_x) < 0.01 &&
+    Math.abs(tempBuffer[0][4]) - Math.abs(base_y) < 0.01 &&
+    Math.abs(tempBuffer[0][5]) - Math.abs(base_z) < 0.01)
   ) {
     count += 1;
   }
@@ -153,19 +175,32 @@ async function step2() {
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
         predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
+        // predictions[0].keypoints[8].x,
+        // predictions[0].keypoints[8].y,
+        // predictions[0].keypoints[5].x,
+        // predictions[0].keypoints[5].y
       ]);
       OUTPUTS.push([1,0]);
     } else if (tempBuffer.length > 0) {
       calculateChange(
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
-        predictions[0].keypoints3D[8].z
+        predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
       );
     } else {
       tempBuffer[0] = [
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
         predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
       ];
     }
   }
@@ -179,7 +214,7 @@ async function step2() {
     count = 0;
     tempBuffer = [];
     prompt.innerText = "Put finger in bottom left";
-    setTimeout(step3, 3000);
+    step3();
   }
 }
 async function step3() {
@@ -196,19 +231,32 @@ async function step3() {
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
         predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
+        // predictions[0].keypoints[8].x,
+        // predictions[0].keypoints[8].y,
+        // predictions[0].keypoints[5].x,
+        // predictions[0].keypoints[5].y
       ]);
       OUTPUTS.push([1,0]);
     } else if (tempBuffer.length > 0) {
       calculateChange(
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
-        predictions[0].keypoints3D[8].z
+        predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
       );
     } else {
       tempBuffer[0] = [
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
         predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
       ];
     }
   }
@@ -221,8 +269,8 @@ async function step3() {
     render.remove(20, render.canvas.height - 20);
     count = 0;
     tempBuffer = [];
-    prompt.innerText = "Put finger in bottom right";
-    setTimeout(step4, 3000);
+    prompt.innerText = "Put finger at bottom right";
+    step4();
   }
 }
 async function step4() {
@@ -239,19 +287,32 @@ async function step4() {
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
         predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
+        // predictions[0].keypoints[8].x,
+        // predictions[0].keypoints[8].y,
+        // predictions[0].keypoints[5].x,
+        // predictions[0].keypoints[5].y
       ]);
       OUTPUTS.push([1,1]);
     } else if (tempBuffer.length > 0) {
       calculateChange(
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
-        predictions[0].keypoints3D[8].z
+        predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
       );
     } else {
       tempBuffer[0] = [
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
         predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
       ];
     }
   }
@@ -260,10 +321,62 @@ async function step4() {
   } else {
     render.remove(render.canvas.width - 40, render.canvas.height - 20);
     tempBuffer = [];
-    prompt.innerText = "Done !";
+    prompt.innerText = "put finger at center";
     startTraining();
   }
 }
+// async function step5() {
+//   console.log("inside step 5");
+//   render.draw(Math.floor(render.canvas.width/2), Math.floor(render.canvas.height/2));
+//   const estimationConfig = { flipHorizontal: true };
+//   const predictions = await detector.estimateHands(
+//     document.querySelector("video"),
+//     estimationConfig
+//   );
+//   if (predictions.length > 0) {
+//     if (count > 3 && INPUTS.length < 250) {
+//       INPUTS.push([
+//         predictions[0].keypoints3D[8].x,
+//         predictions[0].keypoints3D[8].y,
+//         predictions[0].keypoints3D[8].z,
+//         // predictions[0].keypoints3D[5].x,
+//         // predictions[0].keypoints3D[5].y,
+//         // predictions[0].keypoints3D[5].z,
+//         // predictions[0].keypoints[8].x,
+//         // predictions[0].keypoints[8].y,
+//         // predictions[0].keypoints[5].x,
+//         // predictions[0].keypoints[5].y
+//       ]);
+//       OUTPUTS.push([0.5,0.5]);
+//     } else if (tempBuffer.length > 0) {
+//       calculateChange(
+//         predictions[0].keypoints3D[8].x,
+//         predictions[0].keypoints3D[8].y,
+//         predictions[0].keypoints3D[8].z,
+//         predictions[0].keypoints3D[5].x,
+//         predictions[0].keypoints3D[5].y,
+//         predictions[0].keypoints3D[5].z,
+//       );
+//     } else {
+//       tempBuffer[0] = [
+//         predictions[0].keypoints3D[8].x,
+//         predictions[0].keypoints3D[8].y,
+//         predictions[0].keypoints3D[8].z,
+//         predictions[0].keypoints3D[5].x,
+//         predictions[0].keypoints3D[5].y,
+//         predictions[0].keypoints3D[5].z,
+//       ];
+//     }
+//   }
+//   if (INPUTS.length < 250) {
+//     requestAnimationFrame(step5);
+//   } else {
+//     render.remove(Math.floor(render.canvas.width/2), Math.floor(render.canvas.height/2));
+//     tempBuffer = [];
+//     prompt.innerText = "Done !";
+//     startTraining();
+//   }
+// }
 
 function startTraining() {
   console.log("start training");
@@ -312,10 +425,10 @@ function startTraining() {
   const modelHp = tf.sequential();
   // Note: Would need to change input shape
   // if 6 dimensional instead of 2 dimensional inputs.
-  modelHp.add(tf.layers.dense({ inputShape: [3], units: 64, activation: "relu" }));
+  modelHp.add(tf.layers.dense({ inputShape: [6], units: 64, activation: "relu" }));
   // output layer must be 2 dimensional -
   //  representing 2d screen co-ordinate trying to predict.
-  modelHp.add(tf.layers.dense({ units: 2 }));
+  modelHp.add(tf.layers.dense({ units: 2}));
   modelHp.summary();
 
   train();
@@ -333,7 +446,8 @@ function startTraining() {
     const results = await modelHp.fit(INPUTS_TENSOR, OUTPUTS_TENSOR, {
       shuffle: true,
       batchSize: 10,
-      epochs: 200,
+      epochs: 300,
+      validation_split: 0.2,
       callbacks: {onEpochEnd: logProgress}
     });
 
@@ -357,17 +471,26 @@ function startTraining() {
     const x = predictions[0]?.keypoints3D[8].x;
     const y = predictions[0]?.keypoints3D[8].y;
     const z = predictions[0]?.keypoints3D[8].z;
+    const base_x = predictions[0]?.keypoints3D[5].x;
+    const base_y = predictions[0]?.keypoints3D[5].y;
+    const base_z = predictions[0]?.keypoints3D[5].z;
+    // const x_2d = predictions[0]?.keypoints[8].x;
+    // const y_2d = predictions[0]?.keypoints[8].y;
+    // const basex_2d = predictions[0]?.keypoints[5].x;
+    // const basey_2d = predictions[0]?.keypoints[5].y;
 
-    if (predictions.length > 0 && (x && y && z)) {
-      const output = modelHp.predict(tf.tensor2d([[x, y, z]])).squeeze().arraySync();
+
+    if (predictions.length > 0 && (x && y && z && base_x && base_y && base_z)) {
+      const output = modelHp.predict(tf.tensor2d([[x, y, z, base_x, base_y, base_z]])).squeeze().arraySync();
       // draw on the screen the pointer corresponding to the predicted screen coordinate
       const screenX = Math.floor(Math.abs(output[0] * window.innerWidth));
       const screenY = Math.floor(Math.abs(output[1] * window.innerHeight));
       
-      console.log(screenX + " (" + output[0] +  "), " + screenY + "(" + output[1] + ")");
+      // console.log(screenX + " (" + output[0] +  "), " + screenY + "(" + output[1] + ")");
+      render.clear();
       render.draw(screenX, screenY);
     }
-    requestAnimationFrame(evaluate);
+   requestAnimationFrame(evaluate);
   }
   
 }
