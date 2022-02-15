@@ -105,13 +105,15 @@ async function step1() {
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
         predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[7].x,
+        predictions[0].keypoints3D[7].y,
+        predictions[0].keypoints3D[7].z,
+        predictions[0].keypoints3D[6].x,
+        predictions[0].keypoints3D[6].y,
+        predictions[0].keypoints3D[6].z,
         predictions[0].keypoints3D[5].x,
         predictions[0].keypoints3D[5].y,
         predictions[0].keypoints3D[5].z,
-        // predictions[0].keypoints[8].x,
-        // predictions[0].keypoints[8].y,
-        // predictions[0].keypoints[5].x,
-        // predictions[0].keypoints[5].y
 
       ]);
       OUTPUTS.push([0, 0]);
@@ -175,13 +177,15 @@ async function step2() {
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
         predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[7].x,
+        predictions[0].keypoints3D[7].y,
+        predictions[0].keypoints3D[7].z,
+        predictions[0].keypoints3D[6].x,
+        predictions[0].keypoints3D[6].y,
+        predictions[0].keypoints3D[6].z,
         predictions[0].keypoints3D[5].x,
         predictions[0].keypoints3D[5].y,
         predictions[0].keypoints3D[5].z,
-        // predictions[0].keypoints[8].x,
-        // predictions[0].keypoints[8].y,
-        // predictions[0].keypoints[5].x,
-        // predictions[0].keypoints[5].y
       ]);
       OUTPUTS.push([1,0]);
     } else if (tempBuffer.length > 0) {
@@ -231,13 +235,15 @@ async function step3() {
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
         predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[7].x,
+        predictions[0].keypoints3D[7].y,
+        predictions[0].keypoints3D[7].z,
+        predictions[0].keypoints3D[6].x,
+        predictions[0].keypoints3D[6].y,
+        predictions[0].keypoints3D[6].z,
         predictions[0].keypoints3D[5].x,
         predictions[0].keypoints3D[5].y,
         predictions[0].keypoints3D[5].z,
-        // predictions[0].keypoints[8].x,
-        // predictions[0].keypoints[8].y,
-        // predictions[0].keypoints[5].x,
-        // predictions[0].keypoints[5].y
       ]);
       OUTPUTS.push([1,0]);
     } else if (tempBuffer.length > 0) {
@@ -287,13 +293,15 @@ async function step4() {
         predictions[0].keypoints3D[8].x,
         predictions[0].keypoints3D[8].y,
         predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[7].x,
+        predictions[0].keypoints3D[7].y,
+        predictions[0].keypoints3D[7].z,
+        predictions[0].keypoints3D[6].x,
+        predictions[0].keypoints3D[6].y,
+        predictions[0].keypoints3D[6].z,
         predictions[0].keypoints3D[5].x,
         predictions[0].keypoints3D[5].y,
         predictions[0].keypoints3D[5].z,
-        // predictions[0].keypoints[8].x,
-        // predictions[0].keypoints[8].y,
-        // predictions[0].keypoints[5].x,
-        // predictions[0].keypoints[5].y
       ]);
       OUTPUTS.push([1,1]);
     } else if (tempBuffer.length > 0) {
@@ -322,61 +330,177 @@ async function step4() {
     render.remove(render.canvas.width - 40, render.canvas.height - 20);
     tempBuffer = [];
     prompt.innerText = "put finger at center";
+    step5();
+  }
+}
+async function step5() {
+  console.log("inside step 5");
+  render.draw(Math.floor(render.canvas.width/2), Math.floor(render.canvas.height/2));
+  const estimationConfig = { flipHorizontal: true };
+  const predictions = await detector.estimateHands(
+    document.querySelector("video"),
+    estimationConfig
+  );
+  if (predictions.length > 0) {
+    if (count > 3 && INPUTS.length < 150) {
+      INPUTS.push([
+  predictions[0].keypoints3D[8].x,
+  predictions[0].keypoints3D[8].y,
+  predictions[0].keypoints3D[8].z,
+  predictions[0].keypoints3D[7].x,
+  predictions[0].keypoints3D[7].y,
+  predictions[0].keypoints3D[7].z,
+  predictions[0].keypoints3D[6].x,
+  predictions[0].keypoints3D[6].y,
+  predictions[0].keypoints3D[6].z,
+  predictions[0].keypoints3D[5].x,
+  predictions[0].keypoints3D[5].y,
+  predictions[0].keypoints3D[5].z,
+      ]);
+      OUTPUTS.push([0.5,0.5]);
+    } else if (tempBuffer.length > 0) {
+      calculateChange(
+        predictions[0].keypoints3D[8].x,
+        predictions[0].keypoints3D[8].y,
+        predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
+      );
+    } else {
+      tempBuffer[0] = [
+        predictions[0].keypoints3D[8].x,
+        predictions[0].keypoints3D[8].y,
+        predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
+      ];
+    }
+  }
+  if (INPUTS.length < 150) {
+    requestAnimationFrame(step5);
+  } else {
+    render.remove(Math.floor(render.canvas.width/2), Math.floor(render.canvas.height/2));
+    tempBuffer = [];
+    prompt.innerText = "top center";
+    step6();
+  }
+}
+async function step6() {
+  console.log("inside step 6");
+  render.draw(Math.floor(render.canvas.width/2), 20);
+  const estimationConfig = { flipHorizontal: true };
+  const predictions = await detector.estimateHands(
+    document.querySelector("video"),
+    estimationConfig
+  );
+  if (predictions.length > 0) {
+    let changeX = predictions[0]?.keypoints[8].x - predictions[0]?.keypoints[5].x;
+    let changeY = predictions[0]?.keypoints[8].y - predictions[0]?.keypoints[5].y;
+    let slope = Math.atan(changeY / changeX);
+    if (count > 3 && INPUTS.length < 180) {
+      INPUTS.push([
+        predictions[0].keypoints3D[8].x,
+        predictions[0].keypoints3D[8].y,
+        predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[7].x,
+        predictions[0].keypoints3D[7].y,
+        predictions[0].keypoints3D[7].z,
+        predictions[0].keypoints3D[6].x,
+        predictions[0].keypoints3D[6].y,
+        predictions[0].keypoints3D[6].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
+      ]);
+      OUTPUTS.push([0.5,0]);
+    } else if (tempBuffer.length > 0) {
+      calculateChange(
+        predictions[0].keypoints3D[8].x,
+        predictions[0].keypoints3D[8].y,
+        predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
+      );
+    } else {
+      tempBuffer[0] = [
+        predictions[0].keypoints3D[8].x,
+        predictions[0].keypoints3D[8].y,
+        predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
+      ];
+    }
+  }
+  if (INPUTS.length < 180) {
+    requestAnimationFrame(step6);
+  } else {
+    render.remove(Math.floor(render.canvas.width/2), Math.floor(render.canvas.height/2));
+    tempBuffer = [];
+    prompt.innerText = "bottom center";
+    step7();
+  }
+}
+async function step7() {
+  console.log("inside step 7");
+  render.draw(Math.floor(render.canvas.width/2),Math.floor(render.canvas.height));
+  const estimationConfig = { flipHorizontal: true };
+  const predictions = await detector.estimateHands(
+    document.querySelector("video"),
+    estimationConfig
+  );
+  if (predictions.length > 0) {
+    let changeX = predictions[0]?.keypoints[8].x - predictions[0]?.keypoints[5].x;
+    let changeY = predictions[0]?.keypoints[8].y - predictions[0]?.keypoints[5].y;
+    let slope = Math.atan(changeY / changeX);
+    if (count > 3 && INPUTS.length < 210) {
+      INPUTS.push([
+        predictions[0].keypoints3D[8].x,
+        predictions[0].keypoints3D[8].y,
+        predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[7].x,
+        predictions[0].keypoints3D[7].y,
+        predictions[0].keypoints3D[7].z,
+        predictions[0].keypoints3D[6].x,
+        predictions[0].keypoints3D[6].y,
+        predictions[0].keypoints3D[6].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
+      ]);
+      OUTPUTS.push([0.5,1]);
+    } else if (tempBuffer.length > 0) {
+      calculateChange(
+        predictions[0].keypoints3D[8].x,
+        predictions[0].keypoints3D[8].y,
+        predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
+      );
+    } else {
+      tempBuffer[0] = [
+        predictions[0].keypoints3D[8].x,
+        predictions[0].keypoints3D[8].y,
+        predictions[0].keypoints3D[8].z,
+        predictions[0].keypoints3D[5].x,
+        predictions[0].keypoints3D[5].y,
+        predictions[0].keypoints3D[5].z,
+      ];
+    }
+  }
+  if (INPUTS.length < 210) {
+    requestAnimationFrame(step6);
+  } else {
+    render.remove(Math.floor(render.canvas.width/2), Math.floor(render.canvas.height/2));
+    tempBuffer = [];
+    prompt.innerText = "Done !";
     startTraining();
   }
 }
-// async function step5() {
-//   console.log("inside step 5");
-//   render.draw(Math.floor(render.canvas.width/2), Math.floor(render.canvas.height/2));
-//   const estimationConfig = { flipHorizontal: true };
-//   const predictions = await detector.estimateHands(
-//     document.querySelector("video"),
-//     estimationConfig
-//   );
-//   if (predictions.length > 0) {
-//     if (count > 3 && INPUTS.length < 250) {
-//       INPUTS.push([
-//         predictions[0].keypoints3D[8].x,
-//         predictions[0].keypoints3D[8].y,
-//         predictions[0].keypoints3D[8].z,
-//         // predictions[0].keypoints3D[5].x,
-//         // predictions[0].keypoints3D[5].y,
-//         // predictions[0].keypoints3D[5].z,
-//         // predictions[0].keypoints[8].x,
-//         // predictions[0].keypoints[8].y,
-//         // predictions[0].keypoints[5].x,
-//         // predictions[0].keypoints[5].y
-//       ]);
-//       OUTPUTS.push([0.5,0.5]);
-//     } else if (tempBuffer.length > 0) {
-//       calculateChange(
-//         predictions[0].keypoints3D[8].x,
-//         predictions[0].keypoints3D[8].y,
-//         predictions[0].keypoints3D[8].z,
-//         predictions[0].keypoints3D[5].x,
-//         predictions[0].keypoints3D[5].y,
-//         predictions[0].keypoints3D[5].z,
-//       );
-//     } else {
-//       tempBuffer[0] = [
-//         predictions[0].keypoints3D[8].x,
-//         predictions[0].keypoints3D[8].y,
-//         predictions[0].keypoints3D[8].z,
-//         predictions[0].keypoints3D[5].x,
-//         predictions[0].keypoints3D[5].y,
-//         predictions[0].keypoints3D[5].z,
-//       ];
-//     }
-//   }
-//   if (INPUTS.length < 250) {
-//     requestAnimationFrame(step5);
-//   } else {
-//     render.remove(Math.floor(render.canvas.width/2), Math.floor(render.canvas.height/2));
-//     tempBuffer = [];
-//     prompt.innerText = "Done !";
-//     startTraining();
-//   }
-// }
 
 function startTraining() {
   console.log("start training");
@@ -425,7 +549,8 @@ function startTraining() {
   const modelHp = tf.sequential();
   // Note: Would need to change input shape
   // if 6 dimensional instead of 2 dimensional inputs.
-  modelHp.add(tf.layers.dense({ inputShape: [6], units: 64, activation: "relu" }));
+  modelHp.add(tf.layers.dense({ inputShape: [12], units: 64, activation: "relu" }));
+  
   // output layer must be 2 dimensional -
   //  representing 2d screen co-ordinate trying to predict.
   modelHp.add(tf.layers.dense({ units: 2}));
@@ -471,17 +596,21 @@ function startTraining() {
     const x = predictions[0]?.keypoints3D[8].x;
     const y = predictions[0]?.keypoints3D[8].y;
     const z = predictions[0]?.keypoints3D[8].z;
+    const tip_x1 = predictions[0]?.keypoints3D[7].x;
+    const tip_y2 = predictions[0]?.keypoints3D[7].y;
+    const tip_z3 = predictions[0]?.keypoints3D[7].z;
+    const third1 = predictions[0]?.keypoints3D[6].x;
+    const third2 = predictions[0]?.keypoints3D[6].y;
+    const third3 = predictions[0]?.keypoints3D[6].z;
     const base_x = predictions[0]?.keypoints3D[5].x;
     const base_y = predictions[0]?.keypoints3D[5].y;
     const base_z = predictions[0]?.keypoints3D[5].z;
-    // const x_2d = predictions[0]?.keypoints[8].x;
-    // const y_2d = predictions[0]?.keypoints[8].y;
-    // const basex_2d = predictions[0]?.keypoints[5].x;
-    // const basey_2d = predictions[0]?.keypoints[5].y;
+    
+       
 
 
-    if (predictions.length > 0 && (x && y && z && base_x && base_y && base_z)) {
-      const output = modelHp.predict(tf.tensor2d([[x, y, z, base_x, base_y, base_z]])).squeeze().arraySync();
+    if (predictions.length > 0 && (x && y && z && base_x && base_y && base_z && tip_x1 && tip_y2 && tip_z3 && third1 && third2 && third3)) {
+      const output = modelHp.predict(tf.tensor2d([[x, y, z, tip_x1, tip_y2, tip_z3, third1, third2, third3, base_x, base_y, base_z,]])).squeeze().arraySync();
       // draw on the screen the pointer corresponding to the predicted screen coordinate
       const screenX = Math.floor(Math.abs(output[0] * window.innerWidth));
       const screenY = Math.floor(Math.abs(output[1] * window.innerHeight));
