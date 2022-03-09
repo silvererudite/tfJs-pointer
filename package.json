@@ -1,10 +1,10 @@
 {
   "name": "tfjs-pointer",
   "version": "0.2.0",
-  "description": "Use tfjs model.predict in a chrome extension (v3)",
+  "description": "Use tfjs model to make a laser-like-pointer in a chrome extension (v3)",
   "scripts": {
-    "copy": "copy src\\styles\\* src\\*.html dist\\src\\",
-    "build": "parcel build src/js/*.js -d dist/src/js  --no-minify"
+    "copy": "copy src\\js\\init.js dist\\src\\js\\ && copy src\\js\\draw.js dist\\src\\js\\ && copy src\\js\\global-settings.js dist\\src\\js\\",
+    "build": "parcel build src/js/move.js src/js/content.js -d dist/src/js  --no-minify && npm run copy"
   },
   "license": "Apache 2.0",
   "devDependencies": {
@@ -19,12 +19,14 @@
     "is-svg": "4.3.1",
     "node-fetch": "2.6.1",
     "vega": "5.17.3",
-    "glob-parent": "5.1.2", 
+    "glob-parent": "5.1.2",
     "postcss": "8.2.10"
   },
   "dependencies": {
     "@mediapipe/hands": "^0.4.1635986972",
+    "@mediapipe/pose": "^0.5.1635988162",
     "@tensorflow-models/hand-pose-detection": "^0.0.1",
+    "@tensorflow-models/pose-detection": "^2.0.0",
     "@tensorflow/tfjs": "^3.13.0",
     "@tensorflow/tfjs-backend-webgl": "^3.13.0",
     "@tensorflow/tfjs-converter": "^3.13.0",

@@ -8,14 +8,18 @@
 
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "storage"
   ],
   "host_permissions": [
     "<all_urls>"
   ],
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'"
-  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "css": ["src/styles/content-style.css"]
+    }
+  ],
   "manifest_version": 3,
   "icons": {
     "16": "images/get_started16.png",

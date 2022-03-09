@@ -21,7 +21,7 @@
   top: 0;
   z-index: 2; 
 }
-video {
+.tfJs-video {
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
 }

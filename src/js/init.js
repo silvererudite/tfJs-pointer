@@ -23,7 +23,7 @@ async function injectCanvas() {
     currentWindow: true});
   chrome.scripting.executeScript({
     target: {tabId: TAB.id},
-    files: ['js/content-script.js'],
+    files: ['src/js/content.js'],
   });
 };
 // communicate to the content-script that user has toggled off
